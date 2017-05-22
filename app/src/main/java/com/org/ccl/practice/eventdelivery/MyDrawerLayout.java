@@ -208,6 +208,11 @@ public class MyDrawerLayout extends RelativeLayout implements View.OnTouchListen
     }
 
     @Override
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
+        return super.generateLayoutParams(lp);
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         LayoutParams rightOneLayoutParams = (LayoutParams) mRightButtonOne.getLayoutParams();
