@@ -1,9 +1,12 @@
 package com.org.ccl.practice.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -12,6 +15,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.org.ccl.practice.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,13 +193,29 @@ public class MyViewGroup extends ViewGroup {
         paint.setColor(Color.RED);
         canvas.drawCircle(540,960,100,paint);*/
 
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_arrow_top_new);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(0x66000000);
-        paint.setStyle(Paint.Style.FILL);
-        RectF rectF = new RectF(-250,300,250,800);
-        canvas.drawArc(rectF, -90,180,true,paint);
-        Rect rect = new Rect(200,400,250,450);
-        paint.setColor(Color.BLACK);
-//        canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),rect,rect,paint);
+        Rect rect = new Rect(0,0,bitmap.getWidth(),bitmap.getHeight());
+        Rect rect1 = new Rect(500, 600, 500 + bitmap.getWidth(), 600 + bitmap.getHeight());
+        paint.setColor(Color.GREEN);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawBitmap(bitmap,rect,rect1,paint);
+        RectF rectF = new RectF(100, 100, 800, 600);
+        canvas.drawOval(rectF,paint);
+        Path path = new Path();
+        path.moveTo(100,100);
+        path.lineTo(500,100);
+        path.lineTo(500,500);
+        path.lineTo(100,500);
+        path.close();
+        paint.setTextSize(15);
+        paint.setUnderlineText(true);
+        canvas.drawPath(path,paint);
+        canvas.drawTextOnPath("Hello World!", path, 200,300,paint);
     }
 }
