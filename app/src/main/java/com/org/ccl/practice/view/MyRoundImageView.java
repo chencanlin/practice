@@ -50,8 +50,7 @@ public class MyRoundImageView extends ImageView {
             int bottom = bitMapWidth > bitMapHeight ? top + bitMapHeight : top + bitMapWidth;
             final Rect rectSrc = new Rect(left,top,right,bottom);
             final Rect rectDest = new Rect(0, 0, getWidth(), getHeight());
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-//            paint.reset();
+            paint.reset();
             paint.setColor(Color.GREEN);
             canvas.drawARGB(0,0,0,0);
             canvas.drawBitmap(b, rectSrc, rectDest, paint);
