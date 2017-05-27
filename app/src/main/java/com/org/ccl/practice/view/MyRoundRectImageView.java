@@ -103,7 +103,7 @@ public class MyRoundRectImageView extends ImageView {
         int saveLayer = canvas.saveLayer(0, 0, getWidth(), getHeight(), mPaint, Canvas.ALL_SAVE_FLAG);
         Rect dstBitmapRect = getRect(dstBitmap.getWidth(), dstBitmap.getHeight());
         Rect srcBitmapRect = getRect(srcBitmap.getWidth(), srcBitmap.getHeight());
-        Rect screenRect = getRect(getWidth(),getHeight());
+        Rect screenRect = getRect(getWidth()-30,getHeight()-30);
         canvas.drawBitmap(dstBitmap, dstBitmapRect, screenRect, mPaint);
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(srcBitmap, srcBitmapRect, screenRect, mPaint);

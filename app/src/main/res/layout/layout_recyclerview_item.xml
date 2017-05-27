@@ -3,7 +3,9 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:id="@+id/ll_root"
+    android:transitionName="container">
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"

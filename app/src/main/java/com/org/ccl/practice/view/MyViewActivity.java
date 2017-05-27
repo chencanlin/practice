@@ -1,9 +1,11 @@
 package com.org.ccl.practice.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,7 @@ public class MyViewActivity extends Activity {
         MyDeliveryInfoView one = (MyDeliveryInfoView) findViewById(R.id.mdiv_one);
         MyDeliveryInfoView two = (MyDeliveryInfoView) findViewById(R.id.mdiv_two);
         MyDeliveryInfoView three = (MyDeliveryInfoView) findViewById(R.id.mdiv_three);
-        MyDeliveryInfoView four = (MyDeliveryInfoView) findViewById(R.id.mdiv_four);
+        final MyDeliveryInfoView four = (MyDeliveryInfoView) findViewById(R.id.mdiv_four);
         ArrayList<MyDeliveryInfo> oneData = new ArrayList<>();
         ArrayList<MyDeliveryInfo> twoData = new ArrayList<>();
         ArrayList<MyDeliveryInfo> threeData = new ArrayList<>();
@@ -76,5 +78,31 @@ public class MyViewActivity extends Activity {
         two.setData(twoData);
         three.setData(threeData);
         four.setData(fourData);
+        four.animate().x(100).start();
+        four.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(MyViewActivity.this,MyService.class));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(100000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
