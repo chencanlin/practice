@@ -22,6 +22,8 @@ import java.util.ArrayList;
  */
 
 public class MyViewActivity extends Activity {
+    private RelativeLayout mRl;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +97,7 @@ public class MyViewActivity extends Activity {
                 }).start();
             }
         });
+        mRl = ((RelativeLayout) findViewById(R.id.rl));
     }
 
     @Override
