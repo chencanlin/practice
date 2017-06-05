@@ -106,7 +106,8 @@
     <com.org.ccl.practice.view.ZoomImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/bg_vehicle_car05"/>
+        android:src="@drawable/s"
+        />
 
 
 </RelativeLayout>
