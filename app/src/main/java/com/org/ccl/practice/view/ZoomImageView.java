@@ -27,6 +27,8 @@ import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import static android.R.attr.x;
+import static android.R.attr.y;
 import static junit.runner.Version.id;
 
 /**
@@ -56,7 +58,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
      * 缩放的手势检测
      */
     private ScaleGestureDetector mScaleGestureDetector = null;
-    private final Matrix mScaleMatrix = new Matrix();
+    public final Matrix mScaleMatrix = new Matrix();
 
     /**
      * 用于双击检测
@@ -75,15 +77,6 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
     private boolean isCheckTopAndBottom = true;
     private boolean isCheckLeftAndRight = true;
 
-    private boolean initPoint = true;
-    private PointF mLeftTopPoint;
-    private PointF mRightTopPoint;
-    private PointF mLeftBottomPoint;
-    private PointF mRightBottomPoint;
-    private Paint mPaint;
-    private RectF srcRect;
-    private int touchOnLineNumber = 0;
-    private boolean isTouchOnLine = false;
 
     public ZoomImageView(Context context) {
         this(context, null);
@@ -92,7 +85,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
     public ZoomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         super.setScaleType(ScaleType.MATRIX);
-        init();
+//        init();
         mGestureDetector = new GestureDetector(context,
                 new SimpleOnGestureListener() {
                     @Override
@@ -125,9 +118,9 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         this.setOnTouchListener(this);
     }
 
-    private void init() {
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    }
+//    private void init() {
+//        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//    }
 
     /**
      * 自动缩放的任务
@@ -159,26 +152,31 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
 
         @Override
         public void run() {
-            // 进行缩放
-            mScaleMatrix.postScale(tmpScale, tmpScale, x, y);
+            scaleImage(mTargetScale,x,y);
+
+        }
+
+    }
+    public void scaleImage(float targetScale, float x, float y) {
+        // 进行缩放
+        mScaleMatrix.postScale(targetScale, targetScale, x, y);
+        checkBorderAndCenterWhenScale();
+        setImageMatrix(mScaleMatrix);
+
+        final float currentScale = getScale();
+        // 如果值在合法范围内，继续缩放
+        if (((targetScale > 1f) && (currentScale < targetScale))
+                || ((targetScale < 1f) && (targetScale < currentScale))) {
+            ZoomImageView.this.post(new AutoScaleRunnable(targetScale,x,y));
+        } else
+        // 设置为目标的缩放比例
+        {
+            final float deltaScale = targetScale / currentScale;
+            mScaleMatrix.postScale(deltaScale, deltaScale, x, y);
             checkBorderAndCenterWhenScale();
             setImageMatrix(mScaleMatrix);
-
-            final float currentScale = getScale();
-            // 如果值在合法范围内，继续缩放
-            if (((tmpScale > 1f) && (currentScale < mTargetScale))
-                    || ((tmpScale < 1f) && (mTargetScale < currentScale))) {
-                ZoomImageView.this.post(this);
-            } else
-            // 设置为目标的缩放比例
-            {
-                final float deltaScale = mTargetScale / currentScale;
-                mScaleMatrix.postScale(deltaScale, deltaScale, x, y);
-                checkBorderAndCenterWhenScale();
-                setImageMatrix(mScaleMatrix);
-                isAutoScale = false;
-            }
-
+            ((MyRelativeLayout) getParent()).scaleLightArea();
+            isAutoScale = false;
         }
     }
 
@@ -212,6 +210,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
                     detector.getFocusX(), detector.getFocusY());
             checkBorderAndCenterWhenScale();
             setImageMatrix(mScaleMatrix);
+            ((MyRelativeLayout) getParent()).scaleLightArea();
         }
         return true;
 
@@ -264,7 +263,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
      *
      * @return
      */
-    private RectF getMatrixRectF() {
+    public RectF getMatrixRectF() {
         Matrix matrix = mScaleMatrix;
         RectF rect = new RectF();
         Drawable d = getDrawable();
@@ -318,55 +317,13 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
                 if (rectF.width() > getWidth() || rectF.height() > getHeight()) {
                     getParent().requestDisallowInterceptTouchEvent(true);
                 }
-                    float x1 = event.getX();
-                    float y1 = event.getY();
-                if(x1 >= mLeftTopPoint.x-20&&x1<=mRightTopPoint.x+20&&y1>=mLeftTopPoint.y-20&&y1<=mLeftTopPoint.y+20){
-                    isTouchOnLine = true;
-                    touchOnLineNumber = 0;
-                }
-                if(!isTouchOnLine){
-                    if(x1>=mLeftTopPoint.x-20&&x1<=mLeftTopPoint.x+20&&y1>=mLeftTopPoint.y-20&&y1<=mLeftBottomPoint.y+20){
-                        isTouchOnLine = true;
-                        touchOnLineNumber =1;
-                    }
-                }
-                if(!isTouchOnLine){
-                    if(x1>=mLeftBottomPoint.x-20&&x1<=mRightBottomPoint.x+20&&y1>=mLeftBottomPoint.y-20&&y1<=mLeftBottomPoint.y+20){
-                        isTouchOnLine = true;
-                        touchOnLineNumber =2;
-                    }
-                }
-                if(!isTouchOnLine){
-                    if(x1>=mRightTopPoint.x-10&&x1<=mRightTopPoint.x+10&&y1>=mRightTopPoint.y-10&&y1<=mRightBottomPoint.y+10){
-                        isTouchOnLine = true;
-                        touchOnLineNumber =3;
-                    }
-                }
 
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (rectF.width() > getWidth() || rectF.height() > getHeight()) {
                     getParent().requestDisallowInterceptTouchEvent(true);
                 }
-                if(isTouchOnLine){
-                    float vX = event.getX();
-                    float vY = event.getY();
-                    if(touchOnLineNumber == 0){
-                        mLeftTopPoint.y =  vY;
-                        mRightTopPoint.y = vY;
-                    } else if(touchOnLineNumber == 1){
-                       mLeftTopPoint.x  = vX;
-                        mLeftBottomPoint.x = vX;
-                    }  else if(touchOnLineNumber ==2 ){
-                        mLeftBottomPoint.y = vY;
-                        mRightBottomPoint.y = vY;
-                    }  else if(touchOnLineNumber == 3){
-                        mRightBottomPoint.x = vX;
-                        mRightTopPoint.x = vX;
-                    }
-                    invalidate();
-                    break;
-                }
+
                 Log.e(TAG, "ACTION_MOVE");
                 float dx = x - mLastX;
                 float dy = y - mLastY;
@@ -412,7 +369,6 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             case MotionEvent.ACTION_CANCEL:
                 Log.e(TAG, "ACTION_UP");
                 lastPointerCount = 0;
-                isTouchOnLine = false;
                 break;
         }
 
@@ -457,21 +413,21 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             float scale = 1.0f;
             // 如果图片的宽或者高大于屏幕，则缩放至屏幕的宽或者高
             if (dw > width && dh <= height) {
-                scale = width * 1.0f / dw;
+                scale = (width-DensityUtils.dp2px(getContext(),60)) * 1.0f / dw;
             }
             if (dh > height && dw <= width) {
-                scale = height * 1.0f / dh;
+                scale = (height-DensityUtils.dp2px(getContext(),60)) * 1.0f / dh;
             }
             // 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
             if (dw > width && dh > height) {
-                scale = Math.min(width * 1.0f / dw, height * 1.0f / dh);
+                scale = Math.min((width - DensityUtils.dp2px(getContext(), 60)) * 1.0f / dw, (height - DensityUtils.dp2px(getContext(), 60)) * 1.0f / dh);
             }
             initScale = scale;
 
             Log.e(TAG, "initScale = " + initScale);
             mScaleMatrix.postTranslate((width - dw) / 2, (height - dh) / 2);
-            mScaleMatrix.postScale(scale, scale, getWidth() / 2,
-                    getHeight() / 2);
+            mScaleMatrix.postScale(scale, scale, width / 2,
+                    height / 2);
             // 图片移动至屏幕中心
             setImageMatrix(mScaleMatrix);
             once = false;
@@ -515,58 +471,9 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         return Math.sqrt((dx * dx) + (dy * dy)) >= mTouchSlop;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (initPoint) {
-            RectF matrixRectF = getMatrixRectF();
-            mLeftTopPoint = new PointF(matrixRectF.left, matrixRectF.top);
-            mRightTopPoint = new PointF(matrixRectF.right,  matrixRectF.top);
-            mLeftBottomPoint = new PointF(matrixRectF.left, matrixRectF.bottom);
-            mRightBottomPoint = new PointF( matrixRectF.right, matrixRectF.bottom);
-            srcRect = new RectF(0, 0, getWidth(), getHeight());
-            initPoint = false;
-        }
-        int i = canvas.saveLayer(getLeft(), getTop(), getRight(), getBottom(), mPaint, Canvas.ALL_SAVE_FLAG);
-        Bitmap dstBitmap = makeDst();
-        Bitmap srcBitmap = makeSrc();
-        canvas.drawBitmap(dstBitmap, new Rect(0,0,dstBitmap.getWidth(),dstBitmap.getHeight()), srcRect, mPaint);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(srcBitmap, new Rect(0,0,srcBitmap.getWidth(),srcBitmap.getHeight()), new RectF(mLeftTopPoint.x, mLeftTopPoint.y, mRightBottomPoint.x, mRightBottomPoint.y), mPaint);
-        canvas.restoreToCount(i);
-        mPaint.setXfermode(null);
-        dstBitmap.recycle();
-        srcBitmap.recycle();
+    public void rotate(){
+        mScaleMatrix.postRotate(90);
     }
 
-    private Bitmap makeDst() {
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(0x88000000);
-        Bitmap dstBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(dstBitmap);
-//        canvas.drawARGB(255, 255, 255, 255);
-        canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), paint);
-        return dstBitmap;
-    }
-
-    private Bitmap makeSrc() {
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.TRANSPARENT);
-        Bitmap srcBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(srcBitmap);
-        canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
-        paint.setColor(Color.WHITE);
-        for (int i = 0; i < 4; i++) {
-            float scaleX = i == 0 || i == 3 ? 10 * (mRightTopPoint.x - mLeftTopPoint.x) / getWidth() : 5 * (mRightTopPoint.x - mLeftTopPoint.x) / getWidth();
-            float scaleY = i == 0 || i == 3 ? 10 * (mLeftBottomPoint.y - mLeftTopPoint.y) / getHeight() : 5 * (mLeftBottomPoint.y - mLeftTopPoint.y) / getHeight();
-            paint.setStrokeWidth(scaleX);
-            canvas.drawLine(0, i * getHeight() / 3, getWidth(), i * getHeight() / 3, paint);
-            paint.setStrokeWidth(scaleY);
-            canvas.drawLine(i * getWidth() / 3, 0, i * getWidth() / 3, getHeight(), paint);
-        }
-        return srcBitmap;
-    }
 
 }
