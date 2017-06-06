@@ -3,15 +3,7 @@ package com.org.ccl.practice.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.PointF;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -27,9 +19,12 @@ import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.org.ccl.practice.R;
+
+import static android.R.attr.bitmap;
+import static android.R.attr.width;
 import static android.R.attr.x;
 import static android.R.attr.y;
-import static junit.runner.Version.id;
 
 /**
  * @author zhy
@@ -76,6 +71,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
 
     private boolean isCheckTopAndBottom = true;
     private boolean isCheckLeftAndRight = true;
+    private boolean parentAutoScale = false;
 
 
     public ZoomImageView(Context context) {
@@ -175,7 +171,12 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             mScaleMatrix.postScale(deltaScale, deltaScale, x, y);
             checkBorderAndCenterWhenScale();
             setImageMatrix(mScaleMatrix);
-            ((MyRelativeLayout) getParent()).scaleLightArea();
+            if(parentAutoScale){
+                ((MyScreenShotLayout) getParent()).autoScaleLightArea();
+                parentAutoScale = false;
+            }else {
+                ((MyScreenShotLayout) getParent()).scaleLightArea();
+            }
             isAutoScale = false;
         }
     }
@@ -210,7 +211,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
                     detector.getFocusX(), detector.getFocusY());
             checkBorderAndCenterWhenScale();
             setImageMatrix(mScaleMatrix);
-            ((MyRelativeLayout) getParent()).scaleLightArea();
+            ((MyScreenShotLayout) getParent()).scaleLightArea();
         }
         return true;
 
@@ -471,8 +472,36 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         return Math.sqrt((dx * dx) + (dy * dy)) >= mTouchSlop;
     }
 
+    public void reduction(){
+        ZoomImageView.this.post(
+                new AutoScaleRunnable(initScale, getWidth()/2, getHeight()/2));
+        isAutoScale = true;
+//        mScaleMatrix.postRotate(90);
+    }
+
     public void rotate(){
-        mScaleMatrix.postRotate(90);
+        Bitmap bitmap = ((BitmapDrawable) getDrawable()).getBitmap();
+        Matrix matrix  = new Matrix();
+        matrix.setRotate(90);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+        setImageBitmap(resizedBitmap);
+        float scale = 1.0f;
+        if (resizedBitmap.getWidth() > getWidth() && resizedBitmap.getHeight() <= getHeight()) {
+            scale = (getWidth()-DensityUtils.dp2px(getContext(),60)) * 1.0f / resizedBitmap.getWidth();
+        }
+        if (resizedBitmap.getHeight() > getHeight() && resizedBitmap.getWidth() <= getWidth()) {
+            scale = (getHeight()-DensityUtils.dp2px(getContext(),60)) * 1.0f / resizedBitmap.getHeight();
+        }
+        // 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
+        if (resizedBitmap.getWidth() > getWidth() && resizedBitmap.getHeight() > getHeight()) {
+            scale = Math.min((getWidth() - DensityUtils.dp2px(getContext(), 60)) * 1.0f / resizedBitmap.getWidth(), (getHeight() - DensityUtils.dp2px(getContext(), 60)) * 1.0f / resizedBitmap.getHeight());
+        }
+        initScale = scale;
+        parentAutoScale = true;
+        ZoomImageView.this.post(
+                new AutoScaleRunnable(initScale, getWidth()/2, getHeight()/2));
+        isAutoScale = true;
     }
 
 

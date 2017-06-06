@@ -7,4 +7,10 @@
             <enum name="test_three" value="3"/>
         </attr>
     </declare-styleable>
+    <declare-styleable name="MyScreenShotLayout">
+        <attr name="edge_touch_range" format="integer"/>
+        <attr name="corner_touch_range" format="integer"/>
+        <attr name="min_screen_shot_width" format="dimension"/>
+        <attr name="min_screen_shot_height" format="dimension"/>
+    </declare-styleable>
 </resources>
