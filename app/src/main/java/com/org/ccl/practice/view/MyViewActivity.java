@@ -106,6 +106,7 @@ public class MyViewActivity extends Activity {
         findViewById(R.id.tv_click).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                viewById1.screenShot(true);
                 View decorView = getWindow().getDecorView();
                 decorView.setDrawingCacheEnabled(true);
                 decorView.buildDrawingCache();
