@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import com.org.ccl.practice.R;
 
 import static android.R.attr.bitmap;
+import static android.R.attr.right;
 import static android.R.attr.width;
 import static android.R.attr.x;
 import static android.R.attr.y;
@@ -148,11 +149,12 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
 
         @Override
         public void run() {
-            scaleImage(mTargetScale,x,y);
+            scaleImage(mTargetScale, x, y);
 
         }
 
     }
+
     public void scaleImage(float targetScale, float x, float y) {
         // 进行缩放
         mScaleMatrix.postScale(targetScale, targetScale, x, y);
@@ -163,7 +165,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         // 如果值在合法范围内，继续缩放
         if (((targetScale > 1f) && (currentScale < targetScale))
                 || ((targetScale < 1f) && (targetScale < currentScale))) {
-            ZoomImageView.this.post(new AutoScaleRunnable(targetScale,x,y));
+            ZoomImageView.this.post(new AutoScaleRunnable(targetScale, x, y));
         } else
         // 设置为目标的缩放比例
         {
@@ -171,11 +173,11 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             mScaleMatrix.postScale(deltaScale, deltaScale, x, y);
             checkBorderAndCenterWhenScale();
             setImageMatrix(mScaleMatrix);
-            if(parentAutoScale){
-                ((MyScreenShotLayout) getParent()).autoScaleLightArea();
+            if (parentAutoScale) {
+                ((MyScreenShotLayout) getParent().getParent()).autoScaleLightArea();
                 parentAutoScale = false;
-            }else {
-                ((MyScreenShotLayout) getParent()).scaleLightArea();
+            } else {
+                ((MyScreenShotLayout) getParent().getParent()).scaleLightArea();
             }
             isAutoScale = false;
         }
@@ -211,7 +213,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
                     detector.getFocusX(), detector.getFocusY());
             checkBorderAndCenterWhenScale();
             setImageMatrix(mScaleMatrix);
-            ((MyScreenShotLayout) getParent()).scaleLightArea();
+            ((MyScreenShotLayout) getParent().getParent()).scaleLightArea();
         }
         return true;
 
@@ -316,13 +318,13 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (rectF.width() > getWidth() || rectF.height() > getHeight()) {
-                    getParent().requestDisallowInterceptTouchEvent(true);
+                    getParent().getParent().requestDisallowInterceptTouchEvent(true);
                 }
 
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (rectF.width() > getWidth() || rectF.height() > getHeight()) {
-                    getParent().requestDisallowInterceptTouchEvent(true);
+                    getParent().getParent().requestDisallowInterceptTouchEvent(true);
                 }
 
                 Log.e(TAG, "ACTION_MOVE");
@@ -345,21 +347,54 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
                         // getParent().requestDisallowInterceptTouchEvent(false);
                         // }
                         isCheckLeftAndRight = isCheckTopAndBottom = true;
-                        // 如果宽度小于屏幕宽度，则禁止左右移动
-                        if (rectF.width() < getWidth()) {
-                            dx = 0;
-                            isCheckLeftAndRight = false;
+//                        // 如果宽度小于屏幕宽度，则禁止左右移动
+//                        if (rectF.width() < getWidth()) {
+//                            dx = 0;
+//                            isCheckLeftAndRight = false;
+//                        }
+//                        // 如果高度小雨屏幕高度，则禁止上下移动
+//                        if (rectF.height() < getHeight()) {
+//                            dy = 0;
+//                            isCheckTopAndBottom = false;
+//                        }
+                        MyScreenShotLayout parent = (MyScreenShotLayout) getParent().getParent();
+                        RectF matrixRectF = getMatrixRectF();
+                        if (dx >= 0 && dy >= 0) {
+                            if (parent.lightAreaRect.right - matrixRectF.left - dx < parent.mMinScreenShotWidth) {
+                                dx = parent.lightAreaRect.right - parent.mMinScreenShotWidth - matrixRectF.left;
+                            }
+                            if (parent.lightAreaRect.bottom - matrixRectF.top - dy < parent.mMinScreenShotHeight) {
+                                dy = parent.lightAreaRect.bottom - parent.mMinScreenShotHeight - matrixRectF.top;
+                            }
                         }
-                        // 如果高度小雨屏幕高度，则禁止上下移动
-                        if (rectF.height() < getHeight()) {
-                            dy = 0;
-                            isCheckTopAndBottom = false;
+                        if (dx >= 0 && dy < 0) {
+                            if (parent.lightAreaRect.right - matrixRectF.left - dx < parent.mMinScreenShotWidth) {
+                                dx = parent.lightAreaRect.right - parent.mMinScreenShotWidth - matrixRectF.left;
+                            }
+                            if (matrixRectF.bottom - parent.lightAreaRect.top + dy < parent.mMinScreenShotHeight) {
+                                dy = parent.lightAreaRect.top + parent.mMinScreenShotHeight - matrixRectF.bottom;
+                            }
                         }
-
-
+                        if (dx < 0 && dy >= 0) {
+                            if (matrixRectF.right - parent.lightAreaRect.left + dx < parent.mMinScreenShotWidth) {
+                                dx = parent.lightAreaRect.left + parent.mMinScreenShotWidth - matrixRectF.right;
+                            }
+                            if (parent.lightAreaRect.bottom - matrixRectF.top - dy < parent.mMinScreenShotHeight) {
+                                dy = parent.lightAreaRect.bottom - parent.mMinScreenShotHeight - matrixRectF.top;
+                            }
+                        }
+                        if (dx < 0 && dy < 0) {
+                            if (matrixRectF.right - parent.lightAreaRect.left + dx < parent.mMinScreenShotWidth) {
+                                dx = parent.lightAreaRect.left + parent.mMinScreenShotWidth - matrixRectF.right;
+                            }
+                            if (matrixRectF.bottom - parent.lightAreaRect.top + dy < parent.mMinScreenShotHeight) {
+                                dy = parent.lightAreaRect.top + parent.mMinScreenShotHeight - matrixRectF.bottom;
+                            }
+                        }
                         mScaleMatrix.postTranslate(dx, dy);
-                        checkMatrixBounds();
+//                        checkMatrixBounds();
                         setImageMatrix(mScaleMatrix);
+                        ((MyScreenShotLayout) getParent().getParent()).scaleLightArea();
                     }
                 }
                 mLastX = x;
@@ -370,6 +405,8 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             case MotionEvent.ACTION_CANCEL:
                 Log.e(TAG, "ACTION_UP");
                 lastPointerCount = 0;
+                mLastX = 0;
+                mLastY = 0;
                 break;
         }
 
@@ -414,10 +451,10 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             float scale = 1.0f;
             // 如果图片的宽或者高大于屏幕，则缩放至屏幕的宽或者高
             if (dw > width && dh <= height) {
-                scale = (width-DensityUtils.dp2px(getContext(),60)) * 1.0f / dw;
+                scale = (width - DensityUtils.dp2px(getContext(), 60)) * 1.0f / dw;
             }
             if (dh > height && dw <= width) {
-                scale = (height-DensityUtils.dp2px(getContext(),60)) * 1.0f / dh;
+                scale = (height - DensityUtils.dp2px(getContext(), 60)) * 1.0f / dh;
             }
             // 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
             if (dw > width && dh > height) {
@@ -439,27 +476,27 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
     /**
      * 移动时，进行边界判断，主要判断宽或高大于屏幕的
      */
-    private void checkMatrixBounds() {
-        RectF rect = getMatrixRectF();
-
-        float deltaX = 0, deltaY = 0;
-        final float viewWidth = getWidth();
-        final float viewHeight = getHeight();
-        // 判断移动或缩放后，图片显示是否超出屏幕边界
-        if (rect.top > 0 && isCheckTopAndBottom) {
-            deltaY = -rect.top;
-        }
-        if (rect.bottom < viewHeight && isCheckTopAndBottom) {
-            deltaY = viewHeight - rect.bottom;
-        }
-        if (rect.left > 0 && isCheckLeftAndRight) {
-            deltaX = -rect.left;
-        }
-        if (rect.right < viewWidth && isCheckLeftAndRight) {
-            deltaX = viewWidth - rect.right;
-        }
-        mScaleMatrix.postTranslate(deltaX, deltaY);
-    }
+//    private void checkMatrixBounds() {
+//        RectF rect = getMatrixRectF();
+//
+//        float deltaX = 0, deltaY = 0;
+//        final float viewWidth = getWidth();
+//        final float viewHeight = getHeight();
+//        // 判断移动或缩放后，图片显示是否超出屏幕边界
+//        if (rect.top > 0 && isCheckTopAndBottom) {
+//            deltaY = -rect.top;
+//        }
+//        if (rect.bottom < viewHeight && isCheckTopAndBottom) {
+//            deltaY = viewHeight - rect.bottom;
+//        }
+//        if (rect.left > 0 && isCheckLeftAndRight) {
+//            deltaX = -rect.left;
+//        }
+//        if (rect.right < viewWidth && isCheckLeftAndRight) {
+//            deltaX = viewWidth - rect.right;
+//        }
+//        mScaleMatrix.postTranslate(deltaX, deltaY);
+//    }
 
     /**
      * 是否是推动行为
@@ -472,26 +509,26 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         return Math.sqrt((dx * dx) + (dy * dy)) >= mTouchSlop;
     }
 
-    public void reduction(){
+    public void restore() {
         ZoomImageView.this.post(
-                new AutoScaleRunnable(initScale, getWidth()/2, getHeight()/2));
+                new AutoScaleRunnable(initScale, getWidth() / 2, getHeight() / 2));
         isAutoScale = true;
 //        mScaleMatrix.postRotate(90);
     }
 
-    public void rotate(){
+    public void rotate() {
         Bitmap bitmap = ((BitmapDrawable) getDrawable()).getBitmap();
-        Matrix matrix  = new Matrix();
+        Matrix matrix = new Matrix();
         matrix.setRotate(90);
         Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
                 bitmap.getWidth(), bitmap.getHeight(), matrix, false);
         setImageBitmap(resizedBitmap);
         float scale = 1.0f;
         if (resizedBitmap.getWidth() > getWidth() && resizedBitmap.getHeight() <= getHeight()) {
-            scale = (getWidth()-DensityUtils.dp2px(getContext(),60)) * 1.0f / resizedBitmap.getWidth();
+            scale = (getWidth() - DensityUtils.dp2px(getContext(), 60)) * 1.0f / resizedBitmap.getWidth();
         }
         if (resizedBitmap.getHeight() > getHeight() && resizedBitmap.getWidth() <= getWidth()) {
-            scale = (getHeight()-DensityUtils.dp2px(getContext(),60)) * 1.0f / resizedBitmap.getHeight();
+            scale = (getHeight() - DensityUtils.dp2px(getContext(), 60)) * 1.0f / resizedBitmap.getHeight();
         }
         // 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
         if (resizedBitmap.getWidth() > getWidth() && resizedBitmap.getHeight() > getHeight()) {
@@ -500,7 +537,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         initScale = scale;
         parentAutoScale = true;
         ZoomImageView.this.post(
-                new AutoScaleRunnable(initScale, getWidth()/2, getHeight()/2));
+                new AutoScaleRunnable(initScale, getWidth() / 2, getHeight() / 2));
         isAutoScale = true;
     }
 

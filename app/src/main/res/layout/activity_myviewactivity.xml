@@ -114,51 +114,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
-        app:edge_touch_range="80"
+        app:edge_touch_range="50"
         app:min_screen_shot_width="50dp"
         app:min_screen_shot_height="50dp"
         >
-        <com.org.ccl.practice.view.ZoomImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/image"
-            />
     </com.org.ccl.practice.view.MyScreenShotLayout>
-    <TextView
-        android:id="@+id/tv_click"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:gravity="center"
-        android:background="@android:color/transparent"
-        android:textColor="@android:color/white"
-        android:text="点我"/>
-    <TextView
-    android:id="@+id/tv_click_two"
-    android:layout_below="@+id/tv_click"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="15dp"
-    android:gravity="center"
-    android:background="@android:color/transparent"
-    android:textColor="@android:color/white"
-    android:text="点我"/>
-    <TextView
-        android:id="@+id/tv_click_three"
-        android:layout_below="@+id/tv_click_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:gravity="center"
-        android:background="@android:color/transparent"
-        android:textColor="@android:color/white"
-        android:text="点我"/>
-    <ImageView
-        android:id="@+id/iv_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:layout_centerInParent="true"/>
 
 
 </RelativeLayout>

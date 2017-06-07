@@ -2,8 +2,6 @@ package com.org.ccl.practice.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Display;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.org.ccl.practice.R;
@@ -101,35 +98,35 @@ public class MyViewActivity extends Activity {
             }
         });
         mRl = ((RelativeLayout) findViewById(R.id.rl));
-        final ImageView viewById = (ImageView) findViewById(R.id.iv_image);
-        final MyScreenShotLayout viewById1 = (MyScreenShotLayout) findViewById(R.id.rl_image);
-        findViewById(R.id.tv_click).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewById1.screenShot(true);
-                View decorView = getWindow().getDecorView();
-                decorView.setDrawingCacheEnabled(true);
-                decorView.buildDrawingCache();
-                Bitmap drawingCache = decorView.getDrawingCache();
-                Rect rect = new Rect();
-                getWindow().getDecorView().getWindowVisibleDisplayFrame( rect);
-                Bitmap bitmap = Bitmap.createBitmap(drawingCache, (int) viewById1.lightAreaRect.left, (int) viewById1.lightAreaRect.top+1+rect.top, (int) viewById1.lightAreaRect.width(), (int) viewById1.lightAreaRect.height());
-                viewById1.setVisibility(View.GONE);
-                viewById.setImageBitmap(bitmap);
-            }
-        });
-        findViewById(R.id.tv_click_two).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewById1.mImageView.reduction();
-            }
-        });
-        findViewById(R.id.tv_click_three).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewById1.mImageView.rotate();
-            }
-        });
+//        final ImageView viewById = (ImageView) findViewById(R.id.iv_image);
+//        final MyScreenShotLayout viewById1 = (MyScreenShotLayout) findViewById(R.id.rl_image);
+//        findViewById(R.id.tv_click).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewById1.screenShot(true);
+//                View decorView = getWindow().getDecorView();
+//                decorView.setDrawingCacheEnabled(true);
+//                decorView.buildDrawingCache();
+//                Bitmap drawingCache = decorView.getDrawingCache();
+//                Rect rect = new Rect();
+//                getWindow().getDecorView().getWindowVisibleDisplayFrame( rect);
+//                Bitmap bitmap = Bitmap.createBitmap(drawingCache, (int) viewById1.lightAreaRect.left, (int) viewById1.lightAreaRect.top+1+rect.top, (int) viewById1.lightAreaRect.width(), (int) viewById1.lightAreaRect.height());
+//                viewById1.setVisibility(View.GONE);
+//                viewById.setImageBitmap(bitmap);
+//            }
+//        });
+//        findViewById(R.id.tv_click_two).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewById1.mImageView.reduction();
+//            }
+//        });
+//        findViewById(R.id.tv_click_three).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewById1.mImageView.rotate();
+//            }
+//        });
     }
 
     @Override

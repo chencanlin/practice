@@ -1,5 +1,6 @@
 package com.org.ccl.practice.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -10,21 +11,31 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Environment;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.org.ccl.practice.R;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * Created by ccl on 2017/6/6.
  */
 
-public class MyScreenShotLayout extends RelativeLayout {
+public class MyScreenShotLayout extends RelativeLayout implements View.OnClickListener {
+    public static final String APP_FOLDER = "/com.zuihuibao/";
+    public static final String APP_SCREEN_CAPTURE= "capture/";
     private static final int EDGE_TOUCH_RANGE = 80;
     private static final int MIN_SCREEN_SHOT_WIDTH = 100;
     private static final int MIN_SCREEN_SHOT_HEIGHT = 100;
 
+    private int mScreenShotAreaBottomMargin;
     private boolean initPoint = true;
     private Paint mPaint;
     public RectF lightAreaRect;
@@ -39,8 +50,10 @@ public class MyScreenShotLayout extends RelativeLayout {
     private Bitmap mDstBitmap;
     private boolean isScreenShot = false;
     private int mEdgeTouchRange;
-    private int mMinScreenShotWidth;
-    private int mMinScreenShotHeight;
+    public int mMinScreenShotWidth;
+    public int mMinScreenShotHeight;
+    private View mTvRotate;
+    private ImageView mScreenShotView;
 
     private static class TouchPosition {
         private static final int TOUCH_ON_LEFT_TOP = 0;
@@ -73,7 +86,67 @@ public class MyScreenShotLayout extends RelativeLayout {
     }
 
     private void init() {
+        mScreenShotAreaBottomMargin = DensityUtils.dp2px(getContext(),50);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        LayoutInflater.from(getContext()).inflate(R.layout.layout_screen_shot_bottom_button, this, true);
+        findViewById(R.id.tv_cancel).setOnClickListener(this);
+        findViewById(R.id.tv_determine).setOnClickListener(this);
+        mTvRotate = findViewById(R.id.tv_rotate);
+        mTvRotate.setOnClickListener(this);
+        mImageView = ((ZoomImageView) findViewById(R.id.ziv));
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_cancel:
+                ((Activity) getContext()).finish();
+                break;
+            case R.id.tv_determine:
+                screenCapture();
+                break;
+            case R.id.tv_rotate:
+                mImageView.rotate();
+                break;
+        }
+    }
+
+    private void screenCapture() {
+        screenShot(true);
+        View decorView = ((Activity) getContext()).getWindow().getDecorView();
+        decorView.setDrawingCacheEnabled(true);
+        decorView.buildDrawingCache();
+        Bitmap drawingCache = decorView.getDrawingCache();
+        Rect rect = new Rect();
+        ((Activity) getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame( rect);
+        Bitmap bitmap = Bitmap.createBitmap(drawingCache, (int) lightAreaRect.left+1, (int) lightAreaRect.top+1+rect.top, (int) lightAreaRect.width()+1, (int) lightAreaRect.height()+1);
+        if (bitmap != null) {
+            try {
+                String path;
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                    path = Environment.getExternalStorageDirectory().getAbsolutePath() +APP_FOLDER + APP_SCREEN_CAPTURE;
+                } else {
+//                            ErrorHandler.showMessage(R.string.alert_update_please_insert_sd_card);
+                    return;
+                }
+                File file = new File(path);
+                if (!file.exists() || !file.isDirectory()) {
+                    file.mkdirs();
+                }
+                String captureName = System.currentTimeMillis()+".png";
+                File fileImage = new File(path,captureName);
+                if (!fileImage.exists()||!fileImage.isFile()) {
+                    fileImage.createNewFile();
+                }
+                FileOutputStream out = new FileOutputStream(fileImage);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -176,14 +249,26 @@ public class MyScreenShotLayout extends RelativeLayout {
         if (right - lightAreaRect.left < mMinScreenShotWidth) {
             right = lightAreaRect.left + mMinScreenShotWidth;
         }
-        if (right > matrixRectF.right) {
-            right = matrixRectF.right;
+        if(matrixRectF.right>getWidth()){
+            if(right>getWidth()){
+                right = getWidth();
+            }
+        }else{
+            if (right > matrixRectF.right) {
+                right = matrixRectF.right;
+            }
         }
         if (lightAreaRect.bottom - top < mMinScreenShotHeight) {
-            top = lightAreaRect.top - mMinScreenShotHeight;
+            top = lightAreaRect.bottom - mMinScreenShotHeight;
         }
-        if (top < matrixRectF.top) {
-            top = matrixRectF.top;
+        if(matrixRectF.top<0){
+            if(top<0){
+                top = 0;
+            }
+        }else{
+            if (top < matrixRectF.top) {
+                top = matrixRectF.top;
+            }
         }
         lightAreaRect.right = right;
         lightAreaRect.top = top;
@@ -195,14 +280,26 @@ public class MyScreenShotLayout extends RelativeLayout {
         if (right - lightAreaRect.left < mMinScreenShotWidth) {
             right = lightAreaRect.left + mMinScreenShotWidth;
         }
-        if (right > matrixRectF.right) {
-            right = matrixRectF.right;
+        if(matrixRectF.right>getWidth()){
+            if(right>getWidth()){
+                right = getWidth();
+            }
+        }else{
+            if (right > matrixRectF.right) {
+                right = matrixRectF.right;
+            }
         }
-        if (bottom - lightAreaRect.top < mMinScreenShotHeight) {
-            bottom = lightAreaRect.top + mMinScreenShotHeight;
+        if (bottom-lightAreaRect.top  < mMinScreenShotHeight) {
+            bottom = mMinScreenShotHeight+lightAreaRect.top;
         }
-        if (bottom > matrixRectF.bottom) {
-            bottom = matrixRectF.bottom;
+        if(matrixRectF.bottom>getHeight()-DensityUtils.dp2px(getContext(),50)){
+            if(bottom>getHeight()-DensityUtils.dp2px(getContext(),50)){
+                bottom = getHeight()-DensityUtils.dp2px(getContext(),50);
+            }
+        }else{
+            if (bottom > matrixRectF.bottom) {
+                bottom = matrixRectF.bottom;
+            }
         }
         lightAreaRect.right = right;
         lightAreaRect.bottom = bottom;
@@ -214,14 +311,26 @@ public class MyScreenShotLayout extends RelativeLayout {
         if (lightAreaRect.right - left < mMinScreenShotWidth) {
             left = lightAreaRect.right - mMinScreenShotWidth;
         }
-        if (left < matrixRectF.left) {
-            left = matrixRectF.left;
+        if(matrixRectF.left<0){
+            if(left<0){
+                left = 0;
+            }
+        }else{
+            if (left < matrixRectF.left) {
+                left = matrixRectF.left;
+            }
         }
-        if (bottom - lightAreaRect.top < mMinScreenShotHeight) {
-            bottom = lightAreaRect.top + mMinScreenShotHeight;
+        if (bottom-lightAreaRect.top  < mMinScreenShotHeight) {
+            bottom = mMinScreenShotHeight+lightAreaRect.top;
         }
-        if (bottom > matrixRectF.bottom) {
-            bottom = matrixRectF.bottom;
+        if(matrixRectF.bottom>getHeight()-mScreenShotAreaBottomMargin){
+            if(bottom>getHeight()-mScreenShotAreaBottomMargin){
+                bottom = getHeight()-mScreenShotAreaBottomMargin;
+            }
+        }else{
+            if (bottom > matrixRectF.bottom) {
+                bottom = matrixRectF.bottom;
+            }
         }
         lightAreaRect.left = left;
         lightAreaRect.bottom = bottom;
@@ -233,14 +342,26 @@ public class MyScreenShotLayout extends RelativeLayout {
         if (lightAreaRect.right - left < mMinScreenShotWidth) {
             left = lightAreaRect.right - mMinScreenShotWidth;
         }
-        if (left < matrixRectF.left) {
-            left = matrixRectF.left;
+        if(matrixRectF.left<0){
+            if(left<0){
+                left = 0;
+            }
+        }else{
+            if (left < matrixRectF.left) {
+                left = matrixRectF.left;
+            }
         }
         if (lightAreaRect.bottom - top < mMinScreenShotHeight) {
             top = lightAreaRect.bottom - mMinScreenShotHeight;
         }
-        if (top < matrixRectF.top) {
-            top = matrixRectF.top;
+        if(matrixRectF.top<0){
+            if(top<0){
+                top = 0;
+            }
+        }else{
+            if (top < matrixRectF.top) {
+                top = matrixRectF.top;
+            }
         }
         lightAreaRect.left = left;
         lightAreaRect.top = top;
@@ -260,8 +381,14 @@ public class MyScreenShotLayout extends RelativeLayout {
         if (vY - lightAreaRect.top <= mMinScreenShotHeight) {
             vY = mMinScreenShotHeight + lightAreaRect.top;
         }
-        if (vY >= matrixRectF.bottom) {
-            vY = matrixRectF.bottom;
+        if(matrixRectF.bottom>getHeight()-mScreenShotAreaBottomMargin){
+            if(vY>getHeight()-mScreenShotAreaBottomMargin){
+                vY = getHeight()-mScreenShotAreaBottomMargin;
+            }
+        }else if(matrixRectF.bottom<getHeight()-mScreenShotAreaBottomMargin){
+            if(vY>matrixRectF.bottom){
+                vY = matrixRectF.bottom;
+            }
         }
         lightAreaRect.bottom = vY;
     }
@@ -292,7 +419,7 @@ public class MyScreenShotLayout extends RelativeLayout {
         float minLeftX = matrixRectF.left >= 0 ? matrixRectF.left : 0;
         float maxLeftX = matrixRectF.right >= getWidth() ? getWidth() - lightAreaRect.width() : matrixRectF.right - lightAreaRect.width();
         float minTopY = matrixRectF.top >= 0 ? matrixRectF.top : 0;
-        float maxTopY = matrixRectF.bottom >= getHeight() ? getHeight() - lightAreaRect.height() : matrixRectF.bottom - lightAreaRect.height();
+        float maxTopY = matrixRectF.bottom > getHeight()-mScreenShotAreaBottomMargin ? getHeight()-mScreenShotAreaBottomMargin - lightAreaRect.height() : matrixRectF.bottom - lightAreaRect.height();
         left = left < minLeftX ? minLeftX : left;
         left = left > maxLeftX ? maxLeftX : left;
         top = top < minTopY ? minTopY : top;
@@ -310,9 +437,7 @@ public class MyScreenShotLayout extends RelativeLayout {
 //        int i1 = canvas.saveLayer(getLeft(), getTop(), getRight(), getBottom(), mPaint, Canvas.ALL_SAVE_FLAG);
         super.dispatchDraw(canvas);
         if (initPoint) {
-            mImageView = ((ZoomImageView) getChildAt(0));
-            RectF matrixRectF = mImageView.getMatrixRectF();
-            lightAreaRect = matrixRectF;
+            lightAreaRect =  mImageView.getMatrixRectF();
             mDstBitmap = makeDst();
             initPoint = false;
         }
@@ -330,7 +455,7 @@ public class MyScreenShotLayout extends RelativeLayout {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(0xaa000000);
-        Bitmap dstBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap dstBitmap = Bitmap.createBitmap(getWidth(), getHeight()-mScreenShotAreaBottomMargin, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(dstBitmap);
 //        canvas.drawARGB(255, 255, 255, 255);
         canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
@@ -392,7 +517,7 @@ public class MyScreenShotLayout extends RelativeLayout {
         lightAreaRect.left = matrixRectF.left > 0 ? matrixRectF.left : 0;
         lightAreaRect.top = matrixRectF.top > 0 ? matrixRectF.top : 0;
         lightAreaRect.right = matrixRectF.right < getWidth() ? matrixRectF.right : getWidth();
-        lightAreaRect.bottom = matrixRectF.bottom < getHeight() ? matrixRectF.bottom : getHeight();
+        lightAreaRect.bottom = matrixRectF.bottom < getHeight()-mScreenShotAreaBottomMargin ? matrixRectF.bottom : getHeight()-mScreenShotAreaBottomMargin;
         invalidate();
     }
 
