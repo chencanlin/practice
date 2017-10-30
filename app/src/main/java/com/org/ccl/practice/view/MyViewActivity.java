@@ -2,8 +2,12 @@ package com.org.ccl.practice.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,14 +18,19 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.org.ccl.practice.R;
+import com.org.ccl.practice.eventdelivery.DeliveryActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ccl on 2017/5/15.
  */
 
 public class MyViewActivity extends Activity {
+
+
+    private static final String TAG = "MyViewActivity";
     private RelativeLayout mRl;
 
     @Override
@@ -48,7 +57,7 @@ public class MyViewActivity extends Activity {
         mv.setLayoutParams(mvLayoutParams);
 
         MyDeliveryInfoView one = (MyDeliveryInfoView) findViewById(R.id.mdiv_one);
-        MyDeliveryInfoView two = (MyDeliveryInfoView) findViewById(R.id.mdiv_two);
+        final MyDeliveryInfoView two = (MyDeliveryInfoView) findViewById(R.id.mdiv_two);
         MyDeliveryInfoView three = (MyDeliveryInfoView) findViewById(R.id.mdiv_three);
         final MyDeliveryInfoView four = (MyDeliveryInfoView) findViewById(R.id.mdiv_four);
         ArrayList<MyDeliveryInfo> oneData = new ArrayList<>();
@@ -78,13 +87,20 @@ public class MyViewActivity extends Activity {
         fourData.add(new MyDeliveryInfo("支付",MyDeliveryInfo.Delivery.UNCOMPLETED));
         one.setData(oneData);
         two.setData(twoData);
+        two.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyViewActivity.this, DeliveryActivity.class);
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MyViewActivity.this,two,"container").toBundle());
+            }
+        });
         three.setData(threeData);
         four.setData(fourData);
         four.animate().x(100).start();
         four.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startService(new Intent(MyViewActivity.this,MyService.class));
+                /*startService(new Intent(MyViewActivity.this,MyService.class));
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -95,6 +111,20 @@ public class MyViewActivity extends Activity {
                         }
                     }
                 }).start();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setData(Uri.parse("ccl://com.org.ccl?name=chencanlin"));
+                startActivity(intent);*/
+                Uri uri = Uri.parse("content://com.org.ccl.practicetwo.contentprovider/table1");
+                Cursor query = getContentResolver().query(uri, null, null, null, null);
+                if(query.moveToFirst()){
+                    String name = query.getString(query.getColumnIndex("name"));
+                    String author = query.getString(query.getColumnIndex("author"));
+                    String price = query.getString(query.getColumnIndex("price"));
+                    String pages = query.getString(query.getColumnIndex("pages"));
+                    Log.i(TAG, "name:"+name +"author:"+author+ "price:" +price +"pages:"+pages);
+                }
             }
         });
         mRl = ((RelativeLayout) findViewById(R.id.rl));
@@ -127,6 +157,18 @@ public class MyViewActivity extends Activity {
 //                viewById1.mImageView.rotate();
 //            }
 //        });
+
+        ImageAutoRollLayout viewById = (ImageAutoRollLayout) findViewById(R.id.iarl);
+        List<MyItem> data = new ArrayList<>();
+        for (int i = 0;i<3;i++){
+            data.add(new MyItem());
+        }
+        viewById.setData(data,R.drawable.main_price_banner_default_bg);
+
+        SharedPreferences practice_shared_preference = getSharedPreferences("practice_shared_preference", MODE_PRIVATE);
+        SharedPreferences.Editor edit = practice_shared_preference.edit();
+        edit.putString("practice_test", "practice");
+        edit.commit();
     }
 
     @Override

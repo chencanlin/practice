@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.org.ccl.practice">
+          package="com.org.ccl.practice"
+
+    android:sharedUserId="test.shareuserid">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false">
+        android:theme="@style/AppTheme">
 
         <service
             android:name=".aidl.MessageService"
@@ -28,7 +32,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".eventdelivery.DeliveryActivity">
+        <activity android:name=".eventdelivery.DeliveryActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:host="com.org.ccl"
+                    android:scheme="ccl"
+                    />
+            </intent-filter>
         </activity>
         <!--进程保活测试service-->
         <service android:name=".view.MyService$GrayInnerService"/>

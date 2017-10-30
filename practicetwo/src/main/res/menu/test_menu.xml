@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <item android:id="@+id/one" android:title="One" app:showAsAction="ifRoom|collapseActionView" android:icon="@drawable/search"
+        app:actionViewClass="android.support.v7.widget.SearchView">
+    </item>
+    <item android:id="@+id/two" android:title="two" app:showAsAction="ifRoom"
+          app:actionProviderClass="android.support.v7.widget.ShareActionProvider">
+    </item>
+    <item android:id="@+id/three" android:title="three" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/four" android:title="four" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/five" android:title="five" app:showAsAction="ifRoom"/>
+</menu>

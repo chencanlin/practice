@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+    <com.org.ccl.practicetwo.drawablecustom.DrawableStateItem
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/dsi_one"
+        android:background="@drawable/selector_drawable_state_item_bg"
+        app:readed="true"
+        />
+
+    <com.org.ccl.practicetwo.drawablecustom.DrawableStateItem
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/dsi_two"
+        android:background="@drawable/selector_drawable_state_item_bg"
+        app:readed="false"
+        />
+
+    <com.org.ccl.practicetwo.drawablecustom.CustomView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>

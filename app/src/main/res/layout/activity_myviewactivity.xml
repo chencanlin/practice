@@ -74,7 +74,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="#66C9F7"
-            android:visibility="gone"
             />
 
     </LinearLayout>
@@ -117,8 +116,18 @@
         app:edge_touch_range="50"
         app:min_screen_shot_width="50dp"
         app:min_screen_shot_height="50dp"
+        android:visibility="gone"
         >
     </com.org.ccl.practice.view.MyScreenShotLayout>
+    <com.org.ccl.practice.view.ImageAutoRollLayout
+        android:id="@+id/iarl"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:dot_margin="6dp"
+        app:dot_radiu="6dp"
+        app:layout_type="type_default"
+        android:visibility="gone">
 
+    </com.org.ccl.practice.view.ImageAutoRollLayout>
 
 </RelativeLayout>

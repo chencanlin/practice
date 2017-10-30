@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CirCleRefreshLayout">
+        <attr name="AniBackColor" format="color" />
+        <attr name="AniForeColor" format="color" />
+        <attr name="CircleSmaller" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="TakePictureLayout">
+        <attr name="padding_left_right" format="dimension"/>
+        <attr name="padding_top_bottom" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="CanvasNestView">
+        <attr name="count_point" format="integer"/>
+        <attr name="max_distance" format="integer"/>
+        <attr name="color_point" format="color"/>
+        <attr name="color_line" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="DrawableStateItem">
+        <attr name="readed" format="boolean"/>
+    </declare-styleable>
+</resources>

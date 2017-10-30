@@ -13,4 +13,11 @@
         <attr name="min_screen_shot_width" format="dimension"/>
         <attr name="min_screen_shot_height" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="ImageAutoRollLayout">
+        <attr name="dot_radiu" format="dimension"/>
+        <attr name="dot_margin" format="dimension"/>
+        <attr name="layout_type">
+            <enum name="type_default" value="0"/>
+        </attr>
+    </declare-styleable>
 </resources>

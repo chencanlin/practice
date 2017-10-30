@@ -24,7 +24,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/icon_cancel"/>
+            android:background="@drawable/icon_capture_cancel"/>
 
         <TextView
             android:id="@+id/tv_determine"
@@ -33,14 +33,13 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:background="@drawable/icon_determine"/>
+            android:background="@drawable/icon_capture_determine"/>
 
         <TextView
             android:id="@+id/tv_rotate"
-
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/icon_rotate"
+            android:background="@drawable/icon_capture_rotate"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 

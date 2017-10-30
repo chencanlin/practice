@@ -1,7 +1,7 @@
 package com.org.ccl.practice.eventdelivery;
 
 import android.app.Activity;
-import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,22 +44,31 @@ public class DeliveryActivity extends Activity {
 
     private void init() {
         initView();
+        initData();
+    }
+
+    private void initData() {
+        Uri data = getIntent().getData();
+        if(data != null && "ccl".equalsIgnoreCase(data.getScheme()) && "com.org.ccl".equalsIgnoreCase(data.getHost())){
+            String name = data.getQueryParameter("name");
+            Toast.makeText(this, name, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initView() {
         mLl = ((LinearLayout) findViewById(R.id.ll));
         mIv = ((MyTextView) findViewById(R.id.iv));
-        mIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                mIv.smoothScrollTo(0,300);
-
-                int[] ints = {0, 1};
-                Rect rect = new Rect();
-                mIv.getLocalVisibleRect(rect);
-                mIv.getLocationOnScreen(ints);
-            }
-        });
+//        mIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                mIv.smoothScrollTo(0,300);
+//
+//                int[] ints = {0, 1};
+//                Rect rect = new Rect();
+//                mIv.getLocalVisibleRect(rect);
+//                mIv.getLocationOnScreen(ints);
+//            }
+//        });
         mLv = ((ListView) findViewById(R.id.lv));
         for (int i = 0; i < 100; i++) {
             data.add(i + "");

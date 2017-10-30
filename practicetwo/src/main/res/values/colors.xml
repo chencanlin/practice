@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="control_background">#cc4285f4</color>
+    <color name="canvas_nest_point_color">#ff000000</color>
+    <color name="canvas_nest_line_color">#ff000000</color>
+    <color name="white">#fff</color>
+</resources>

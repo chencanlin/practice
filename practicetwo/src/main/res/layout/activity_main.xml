@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <TextView
+        android:id="@+id/tv_hello_world"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Hello World!"
+        />
+    <com.org.ccl.practicetwo.refreshlayout.CircleRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:AniBackColor="#ff8b90af"
+        app:AniForeColor="#ffffffff"
+        app:CircleSmaller="6"
+        android:id="@+id/refresh_layout"
+        android:visibility="gone">
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+    </com.org.ccl.practicetwo.refreshlayout.CircleRefreshLayout>
+
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_below="@+id/tv_hello_world"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"/>
+
+
+    <TextView
+        android:id="@+id/tv_jump_to_disk_lru_cache_activity"
+        android:layout_below="@+id/tv_hello_world"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="jump to disk lru cache"
+        />
+</RelativeLayout>

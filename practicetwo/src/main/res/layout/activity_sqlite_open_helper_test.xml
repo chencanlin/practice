@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_create_table_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Create Table Book"
+        style="?android:attr/selectableItemBackground"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_create_table_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Create Table Category"
+        style="?android:attr/selectableItemBackground"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_insert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Insert"
+        style="?android:attr/selectableItemBackground"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Delete"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginBottom="15dp"
+        style="?android:attr/selectableItemBackground"
+        android:text="Update"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Query"
+        style="?android:attr/selectableItemBackground"
+        android:gravity="center"/>
+
+</LinearLayout>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.org.ccl.practicetwo"
+
+
+          android:sharedUserId="test.shareuserid">
+
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
+    <application
+        android:name=".PracticeApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        >
+        <activity android:name=".MainActivity">
+        </activity>
+        <activity
+            android:name=".camera.CameraActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".disklrucache.DiskLruCacheDemo"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".canvasnestview.CanvasNestViewActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".nestedscrolling.NestedScrollingActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".nestedscrolling.practice.NestedScrollingPracticeActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".flowlayout.FlowLayoutActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".canvas.CanvasDemoActivity"
+            android:configChanges="orientation|keyboard"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".popupwindowtest.PopupWindowTestActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".materialdesign.MaterialDesignDemoActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".materialdesign.MaterialDesignSecondActivity"
+            android:screenOrientation="portrait"/>
+        <!--android:theme="@style/TestStyle"-->
+        <activity
+            android:name=".drawablecustom.DrawableCustomActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".behavior.BehaviorTestActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".parallaxrecyclerview.ParallaxActivity">
+        </activity>
+        <activity
+            android:name=".transition.TransitionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
+        </activity>
+        <activity
+            android:name=".testmenu.TestMenuAndActionBarActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".testmenu.ToolBarChildActivity"
+            android:parentActivityName=".testmenu.TestMenuAndActionBarActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".database.sqliteopenhelper.SQLiteOpenHelperTestActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".database.litepal.LitePalTestActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".notification.NotificationTestActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".cameraalbum.CameraAlbumTestActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".downloaddemo.DownloadActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".downloaddemo.service.DownloadService"
+            android:enabled="true"
+            android:exported="true"/>
+
+        <provider
+            android:name=".contentprovider.ProviderTest"
+            android:authorities="com.org.ccl.practicetwo.contentprovider"
+            android:enabled="true"
+            android:exported="true"/>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.org.ccl.practicetwo.cameraalbum.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+    </application>
+
+</manifest>
