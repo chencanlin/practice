@@ -118,11 +118,18 @@
         <activity
             android:name=".downloaddemo.DownloadActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".testmenu.guolinmaterialdesign.MaterialDesignActivity"
+            android:screenOrientation="portrait"
+            android:label="Fruits">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".testmenu.guolinmaterialdesign.HeroDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HeroActivityTheme"/>
 
         <service
             android:name=".downloaddemo.service.DownloadService"

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:padding="10dp"
+                android:background="?attr/colorPrimary"
+    >
+
+
+
+
+    <com.org.ccl.roundrectimageview.view.RoundRectImageView
+        android:id="@+id/icon_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:xradius="40dp"
+        app:yradius="40dp"
+        android:src="@mipmap/sf"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/tv_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="yaphet@google.com"
+        android:layout_alignParentBottom="true"
+        android:textSize="14sp"
+        android:textColor="#fff"
+        />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_mail"
+        android:text="Yaphet"
+        android:textSize="14sp"
+        android:textColor="#fff"/>
+
+</RelativeLayout>
