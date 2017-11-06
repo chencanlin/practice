@@ -44,4 +44,12 @@
     <style name="HeroActivityTheme" parent="AppTheme">
     </style>
 
+    <style name="dialog_translucent">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

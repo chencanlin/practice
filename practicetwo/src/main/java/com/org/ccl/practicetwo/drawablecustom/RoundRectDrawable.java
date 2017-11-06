@@ -15,6 +15,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.org.ccl.practicetwo.util.DensityUtils;
+
+
 /**
  * Created by ccl on 2017/9/19.
  */
@@ -27,6 +30,7 @@ public class RoundRectDrawable extends Drawable {
     private int mViewMeasuredWidth;
     private int mViewMeasuredHeight;
     private final BitmapShader mBitmapShader;
+    private View mView;
 
     public RoundRectDrawable(Bitmap bitmap) {
         mBitmap = bitmap;
@@ -39,6 +43,7 @@ public class RoundRectDrawable extends Drawable {
     }
 
     public void setShowView(final View view) {
+        mView = view;
         view.post(new Runnable() {
             @Override
             public void run() {
@@ -55,7 +60,10 @@ public class RoundRectDrawable extends Drawable {
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        canvas.drawRoundRect(new RectF(0, 0, mViewMeasuredWidth, mViewMeasuredHeight), mBitmapWidth / 2, mBitmapWidth / 2, mPaint);
+        canvas.drawRoundRect(new RectF(0, 0,
+                mViewMeasuredWidth, mViewMeasuredHeight),
+                DensityUtils.dp2px(mView.getContext(), 15),
+                DensityUtils.dp2px(mView.getContext(), 15), mPaint);
     }
 
     @Override

@@ -130,6 +130,13 @@
         <activity android:name=".testmenu.guolinmaterialdesign.HeroDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HeroActivityTheme"/>
+        <activity android:name=".alarmpractice.AlarmActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <service android:name=".alarmpractice.service.LongRunnableService"
+            android:exported="true"
+            android:enabled="true"/>
 
         <service
             android:name=".downloaddemo.service.DownloadService"
