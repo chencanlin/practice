@@ -19,4 +19,12 @@
     <declare-styleable name="DrawableStateItem">
         <attr name="readed" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="ImageAutoRollLayout">
+        <attr name="dot_radiu" format="dimension"/>
+        <attr name="dot_margin" format="dimension"/>
+        <attr name="layout_type">
+            <enum name="type_default" value="0"/>
+        </attr>
+    </declare-styleable>
 </resources>

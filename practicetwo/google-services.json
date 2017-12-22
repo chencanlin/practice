@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "393303786810",
+    "firebase_url": "https://test-4265f.firebaseio.com",
+    "project_id": "test-4265f",
+    "storage_bucket": "test-4265f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393303786810:android:43e65b8e30c6bd3e",
+        "android_client_info": {
+          "package_name": "com.org.ccl.practicetwo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393303786810-sb7c84jteechoc1lntf95elj42fgpk7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqqvS9wB7c0zJ2zvA4HL-d8szkMNNJ8Os"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

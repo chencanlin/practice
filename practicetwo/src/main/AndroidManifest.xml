@@ -48,6 +48,7 @@
         <activity
             android:name=".nestedscrolling.practice.NestedScrollingPracticeActivity"
             android:screenOrientation="portrait">
+
         </activity>
         <activity
             android:name=".flowlayout.FlowLayoutActivity"
@@ -65,6 +66,7 @@
         <activity
             android:name=".materialdesign.MaterialDesignDemoActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             >
         </activity>
         <activity
@@ -122,10 +124,6 @@
         <activity android:name=".testmenu.guolinmaterialdesign.MaterialDesignActivity"
             android:screenOrientation="portrait"
             android:label="Fruits">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".testmenu.guolinmaterialdesign.HeroDetailActivity"
             android:screenOrientation="portrait"
@@ -133,6 +131,20 @@
         <activity android:name=".alarmpractice.AlarmActivity"
             android:screenOrientation="portrait"
             >
+        </activity>
+
+        <activity android:name=".colorgradient.TestColorGradientActivity"
+                  android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".styletest.StyleTestActivity"
+                  android:theme="@style/testTheme"
+                  android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <service android:name=".alarmpractice.service.LongRunnableService"
             android:exported="true"

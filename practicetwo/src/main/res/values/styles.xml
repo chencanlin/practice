@@ -52,4 +52,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    // 引用平台相关theme  @android:style/Theme.DeviceDefault.Dialog 或者 android:Theme.DeviceDefault.Dialog
+    <style name="testTheme" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="android:windowShowWallpaper">true</item>
+    </style>
+
 </resources>

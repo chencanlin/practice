@@ -3,6 +3,9 @@ package com.org.ccl.practicetwo;
 import android.app.Application;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import org.litepal.LitePal;
 
 /**
@@ -17,5 +20,7 @@ public class PracticeApplication extends Application {
         LitePal.initialize(this);
 
         Toast.makeText(this, "PracticeApplication", Toast.LENGTH_SHORT).show();
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
+        ImageLoader.getInstance().init(configuration);
     }
 }
