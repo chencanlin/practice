@@ -48,7 +48,10 @@
         <activity
             android:name=".nestedscrolling.practice.NestedScrollingPracticeActivity"
             android:screenOrientation="portrait">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".flowlayout.FlowLayoutActivity"
@@ -141,10 +144,6 @@
                   android:theme="@style/testTheme"
                   android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <service android:name=".alarmpractice.service.LongRunnableService"
             android:exported="true"
