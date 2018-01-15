@@ -14,20 +14,21 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/abl"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|snap|enterAlways"
-                app:contentInsetStart="0dp"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|snap|enterAlways"
                 app:title="Toolbar"
-                app:titleTextColor="@android:color/white">
+                app:titleTextColor="@android:color/white"
+                >
 
                 <!--<ImageView
                     android:id="@+id/iv_back"
@@ -59,6 +60,17 @@
                     android:layout_marginEnd="10dp"/>-->
 
             </android.support.v7.widget.Toolbar>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_orange_light"
+                android:padding="10dp"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/holo_purple"
+                android:text="我是固定的"/>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -78,31 +90,94 @@
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_right"
             android:layout_gravity="bottom|right"
-            app:elevation="6dp"
-            android:layout_marginRight="16dp"
             android:layout_marginBottom="72dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/icon_right"
+            app:elevation="6dp"
             app:layout_behavior="com.ccl.perfectisshit.practicethree.behaviorptone.behavior.FabBehavior"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:orientation="vertical"
             android:layout_gravity="bottom"
+            android:orientation="vertical"
             app:layout_behavior="com.ccl.perfectisshit.practicethree.behaviorptone.behavior.BottomLayoutBehavior">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/colorPrimary"
+                android:gravity="center"
+                android:text="这是一个底栏"
                 android:textColor="@android:color/white"
                 android:textSize="15sp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="这是一个底栏"/>
+                android:textStyle="bold"/>
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/design_bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:minHeight="100dp"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="56dp"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            >
+
+            <TextView
+                android:id="@+id/bottom_sheet_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="这是一个BottomSheet"
+                />
+
+            <ImageView
+                android:id="@+id/bottom_sheet_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:minHeight="100dp"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_launcher_round"/>
+        </RelativeLayout>
+
+
+        <com.ccl.perfectisshit.practicethree.behaviorptone.DependencyView
+            android:id="@+id/dependency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:text="move me"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/holo_blue_light"
+            />
+
+        <TextView
+            android:id="@+id/tv_follow_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/holo_purple"
+            android:text="follow parent"
+            android:gravity="center"
+            android:layout_marginTop="90dp"
+            android:background="@android:color/holo_orange_light"
+            app:layout_behavior="com.ccl.perfectisshit.practicethree.behaviorptone.behavior.TestBehavior"/>
+
     </android.support.design.widget.CoordinatorLayout>
+
 
 </LinearLayout>
