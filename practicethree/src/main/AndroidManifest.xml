@@ -18,12 +18,21 @@
         <activity
             android:name=".behaviorptone.BehaviorPtOneActivity"
             android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name=".eventbusdemo.EventBusTestActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".eventbusdemo.SecondActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

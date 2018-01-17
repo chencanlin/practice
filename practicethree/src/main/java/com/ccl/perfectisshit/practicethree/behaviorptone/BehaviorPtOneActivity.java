@@ -10,6 +10,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.ccl.perfectisshit.practicethree.R;
 import com.ccl.perfectisshit.practicethree.behaviorptone.adapter.RvAdapter;
@@ -23,7 +25,7 @@ import java.util.List;
 
 public class BehaviorPtOneActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-
+    private static final String TAG = "BehaviorPtOneActivity";
     private CoordinatorLayout mCoordinatorLayout;
     private AppBarLayout mAppBarLayout;
     private Toolbar mToolbar;
@@ -51,6 +53,15 @@ public class BehaviorPtOneActivity extends AppCompatActivity implements SwipeRef
             data.add(i+ "");
         }
         mRvAdapter.setData(data);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int heightPixels = displayMetrics.heightPixels;
+        int widthPixels = displayMetrics.widthPixels;
+        Log.d(TAG, "onWindowFocusChanged: " + heightPixels + "---" + widthPixels);
     }
 
     private void initView() {
