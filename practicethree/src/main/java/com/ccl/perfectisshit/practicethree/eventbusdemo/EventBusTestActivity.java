@@ -1,6 +1,7 @@
 package com.ccl.perfectisshit.practicethree.eventbusdemo;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
@@ -43,6 +44,8 @@ public class EventBusTestActivity extends AppCompatActivity implements IMessageN
                 startActivity(intent);
             }
         });
+
+        BitmapFactory bitmapFactory = new BitmapFactory();
         findViewById(R.id.tv_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,11 +6,11 @@ import java.lang.reflect.Constructor;
  * Created by ccl on 2018/1/19.
  */
 
-public class Factory{
-    public static <T extends Factory> T getFactory(Class<T> iFactory) {
-        Factory factory;
+public class Factory implements IFactory{
+    public <T extends IFactory> T getFactory(Class<T> iFactory) {
+        IFactory factory;
         try {
-            Constructor<? extends Factory> declaredConstructor = iFactory.getDeclaredConstructor();
+            Constructor<? extends IFactory> declaredConstructor = iFactory.getDeclaredConstructor();
             factory = declaredConstructor.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
